@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}Usuarios | Sistema{% endblock %}
+
+{% block contenido %}
+<div class="page-header">
+    <h2>Usuarios Registrados</h2>
+    <a href="{% url 'app_usuario:crear_usuario' %}" class="btn btn-primary">+ Agregar Usuario</a>
+</div>
+
+<ul class="user-grid">
+    {% for usuario in usuarios %}
+    <li class="user-card">
+        <a href="{% url 'app_usuario:detalle_usuario' usuario.id_usuario %}">
+            {% if usuario.avatar %}
+                <img src="{{ usuario.avatar.url }}" alt="Avatar de {{ usuario.nombre_usuario }}" class="imagen" height="150px">
+            {% else %}
+                <img src="{% static 'img/default-avatar.svg' %}" alt="Avatar por defecto" class="imagen">
+            {% endif %}
+
+            <div class="user-info">
+                <h3>{{ usuario.nombre_usuario }}</h3>
+                <p class="user-email">{{ usuario.email }}</p>
+                <p class="user-role">
+                    {% if usuario.es_creador %}
+                        <span class="badge bg-success">Creador</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Lector</span>
+                    {% endif %}
+                </p>
+                <p class="user-dates">
+                    <small>📅 Registrado: {{ usuario.fecha_registro }}</small><br>
+                    <small>🕓 Última conexión: {{ usuario.ultima_conexion|date:"d/m/Y H:i" }}</small>
+                </p>
+            </div>
+        </a>
+
+        <div class="user-actions">
+            <a href="{% url 'app_usuario:editar_usuario' usuario.id_usuario %}" class="btn btn-warning btn-sm" title="Editar">✏️</a>
+            <a href="{% url 'app_usuario:borrar_usuario' usuario.id_usuario %}" class="btn btn-danger btn-sm" title="Eliminar">🗑️</a>
+        </div>
+    </li>
+    {% empty %}
+    <li class="no-users">No hay usuarios registrados.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

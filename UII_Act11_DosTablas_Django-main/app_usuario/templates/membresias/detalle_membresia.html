@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block titulo %}Membresía de {{ membresia.usuario.nombre_usuario }} | Sistema{% endblock %}
+
+{% block contenido %}
+<article class="membership-detail">
+    <div class="membership-banner">
+        <div class="membership-info">
+            <h1>Membresía: {{ membresia.tipo_membresia }}</h1>
+            <h3>Usuario: {{ membresia.usuario.nombre_usuario }}</h3>
+        </div>
+    </div>
+
+    <div class="detail-actions">
+        <a href="{% url 'app_usuario:editar_membresia' membresia.id_membresia %}" class="btn btn-secondary">✏️ Editar</a>
+        <a href="{% url 'app_usuario:borrar_membresia' membresia.id_membresia %}" class="btn btn-danger">🗑️ Borrar</a>
+    </div>
+
+    <section class="membership-info-section">
+        <h2>Detalles de la Membresía</h2>
+        <ul>
+            <li>Tipo: {{ membresia.tipo_membresia }}</li>
+            <li>Precio: ${{ membresia.precio }}</li>
+            <li>Fecha de Inicio: {{ membresia.fecha_inicio }}</li>
+            <li>Fecha de Expiración: {% if membresia.fecha_expiracion %}{{ membresia.fecha_expiracion }}{% else %}No definida{% endif %}</li>
+            <li>Estado: {% if membresia.estado %}Activa{% else %}Inactiva{% endif %}</li>
+        </ul>
+    </section>
+</article>
+{% endblock %}

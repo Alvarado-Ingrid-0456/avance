@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}{{ usuario.nombre_usuario }} | Usuarios{% endblock %}
+
+{% block contenido %}
+<article class="user-detail">
+    <div class="user-banner">
+        {% if usuario.avatar %}
+            <img src="{{ usuario.avatar.url }}" alt="Avatar de {{ usuario.nombre_usuario }}" class="detail-photo">
+        {% else %}
+            <img src="{% static 'img/default-avatar.svg' %}" alt="Avatar por defecto" class="detail-photo">
+        {% endif %}
+        <div class="user-info">
+            <h1>{{ usuario.nombre_usuario }}</h1>
+            <h3>{{ usuario.email }}</h3>
+            {% if usuario.es_creador %}
+                <span class="badge badge-success">Creador</span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="detail-actions">
+    <a href="{% url 'app_usuario:editar_usuario' usuario.id_usuario %}" class="btn btn-secondary">✏️ Editar</a>
+    <a href="{% url 'app_usuario:borrar_usuario' usuario.id_usuario %}" class="btn btn-danger">🗑️ Borrar</a>
+    </div>
+
+    <section class="membership-section">
+        <h2>Membresía</h2>
+        {% if usuario.membresia %}
+        <div class="membership-info">
+            <p><strong>Tipo:</strong> {{ usuario.membresia.get_tipo_membresia_display }}</p>
+            <p><strong>Estado:</strong> {% if usuario.membresia.estado %}Activa{% else %}Inactiva{% endif %}</p>
+            <p><strong>Precio:</strong> ${{ usuario.membresia.precio }}</p>
+            {% if usuario.membresia.fecha_expiracion %}
+                <p><strong>Válida hasta:</strong> {{ usuario.membresia.fecha_expiracion }}</p>
+            {% endif %}
+        </div>
+        {% else %}
+        <p class="empty-message">Este usuario no tiene membresía activa.</p>
+        {% endif %}
+    </section>
+</article>
+{% endblock %}

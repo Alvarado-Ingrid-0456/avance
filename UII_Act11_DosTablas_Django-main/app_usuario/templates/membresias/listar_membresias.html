@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block titulo %}Membresías | Sistema{% endblock %}
+
+{% block contenido %}
+<div class="page-header">
+    <h2>Membresías Registradas</h2>
+    <a href="{% url 'app_usuario:crear_membresia' %}" class="btn btn-primary">+ Agregar Membresía</a>
+</div>
+
+<ul class="membership-grid">
+    {% for membresia in membresias %}
+    <li class="membership-card">
+        <a href="{% url 'app_usuario:detalle_membresia' membresia.id_membresia %}">
+            <div class="membership-header">
+                <h3>{{ membresia.get_tipo_membresia_display }}</h3>
+                <p class="membership-user">👤 {{ membresia.usuario.nombre_usuario }}</p>
+            </div>
+
+            <div class="membership-info">
+                <p><strong>Precio:</strong> ${{ membresia.precio }}</p>
+                <p><strong>Inicio:</strong> {{ membresia.fecha_inicio|date:"d/m/Y" }}</p>
+                <p>
+                    <strong>Expira:</strong>
+                    {% if membresia.fecha_expiracion %}
+                        {{ membresia.fecha_expiracion|date:"d/m/Y" }}
+                    {% else %}
+                        <span class="text-muted">No definido</span>
+                    {% endif %}
+                </p>
+                <p>
+                    <strong>Estado:</strong>
+                    {% if membresia.estado %}
+                        <span class="badge bg-success">Activa</span>
+                    {% else %}
+                        <span class="badge bg-danger">Inactiva</span>
+                    {% endif %}
+                </p>
+            </div>
+        </a>
+    </li>
+    {% empty %}
+    <li class="no-memberships">No hay membresías registradas.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

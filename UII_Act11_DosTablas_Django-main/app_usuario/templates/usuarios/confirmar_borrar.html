@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block titulo %}Eliminar Usuario | Sistema{% endblock %}
+
+{% block contenido %}
+<h2>¿Estás seguro de que quieres borrar a "{{ usuario.nombre_usuario }}"?</h2>
+<p>Esta acción no se puede deshacer.</p>
+<form method="post">
+    {% csrf_token %}
+    <div class="actions">
+        <button type="submit" class="btn btn-danger">Sí, Borrar</button>
+    <a href="{% url 'app_usuario:listar_usuarios' %}" class="btn">Cancelar</a>
+    </div>
+</form>
+{% endblock %}
